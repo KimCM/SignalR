@@ -105,6 +105,7 @@
 
             // Map the callback to our encompassed function
             callbackMap[eventName][callback] = function (e, data) {
+                connection.log("Hub " + that.hubName + " invoked method " + eventName + " on the client");
                 callback.apply(that, data);
             };
 
@@ -186,9 +187,11 @@
                         error = signalR._.error(result.Error, source);
                         error.data = result.ErrorData;
 
+                        connection.log(that.hubNameme + "." + methodName + " failed to execute. Error: " + error.message);
                         d.rejectWith(that, [error]);
                     } else {
                         // Server invocation succeeded, resolve the deferred
+                        connection.log("Invoked " + that.hubNameme + "." + methodName);
                         d.resolveWith(that, [result.Result]);
                     }
                 };
